@@ -4,10 +4,10 @@ namespace AFCStatsApp.Interfaces.Repositories
 {
     public interface IPlayerRepository
     {
-        public IEnumerable<PlayerModel> GetAllPlayers();
-        public PlayerModel GetPlayer(int playerId);
-        public void AddPlayer(PlayerModel newPlayer);
-        public void UpdatePlayer(PlayerModel playerToBeUpdated);
-        public void DeletePlayer(PlayerModel playerToBeRemoved);
+        public Task<List<PlayerModel>> GetAllAsync();
+        public Task<PlayerModel?> GetByIdAsync(int playerId);
+        public Task<PlayerModel> AddAsync(PlayerModel newPlayer);
+        public Task<PlayerModel> UpdateAsync(PlayerModel playerToBeUpdated);
+        public Task<bool> DeleteAsync(int playerId);
     }
 }
