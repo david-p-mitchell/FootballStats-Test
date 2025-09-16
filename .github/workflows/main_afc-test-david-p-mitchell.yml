@@ -67,7 +67,7 @@ jobs:
               az webapp config connection-string set \
                 --name afc-test-david-p-mitchell \
                 --resource-group Ars_App \
-                --settings DefaultConnection="${{ secrets.DB_CONNECTION_STRING }}" \
+                --settings FootballDb="${{ secrets.DB_CONNECTION_STRING }}" \
                 --connection-string-type SQLServer
 
         - name: Deploy to Azure Web App

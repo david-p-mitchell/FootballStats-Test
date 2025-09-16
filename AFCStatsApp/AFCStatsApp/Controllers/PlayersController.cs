@@ -19,7 +19,7 @@ public class PlayersController(IPlayerService _playerService) : Controller
         }
         catch (Exception ex)
         {
-            return BadRequest(ex.Message);
+            return Problem(ex.Message);
             throw;
 
         }
