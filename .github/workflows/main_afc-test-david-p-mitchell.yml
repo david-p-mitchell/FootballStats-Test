@@ -21,16 +21,16 @@ jobs:
           dotnet-version: '8.x'
 
       - name: Restore dependencies
-        run: dotnet restore ./AFCStatsApp/AFCStatsApp.csproj
+        run: dotnet restore ./AFCStatsApp/AFCStatsApp/AFCStatsApp.csproj
 
       - name: Build with dotnet
-        run: dotnet build ./AFCStatsApp/AFCStatsApp.csproj --configuration Release
+        run: dotnet build ./AFCStatsApp/AFCStatsApp/AFCStatsApp.csproj --configuration Release
 
       - name: Run tests
-        run: dotnet test ./AFCStatsApp.Tests/AFCStatsApp.Tests.csproj --configuration Release --no-build
+        run: dotnet test ./AFCStatsApp/AFCStatsApp.Tests/AFCStatsApp.Tests.csproj --configuration Release
 
       - name: Publish app
-        run: dotnet publish ./AFCStatsApp/AFCStatsApp.csproj -c Release -o "${{env.DOTNET_ROOT}}/myapp"
+        run: dotnet publish ./AFCStatsApp/AFCStatsApp/AFCStatsApp.csproj -c Release -o "${{env.DOTNET_ROOT}}/myapp"
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
