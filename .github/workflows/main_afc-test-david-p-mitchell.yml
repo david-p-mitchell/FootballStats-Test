@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     permissions:
       contents: read
 
@@ -68,7 +68,7 @@ jobs:
                 --name afc-test-david-p-mitchell \
                 --resource-group Ars_App \
                 --settings DefaultConnection="${{ secrets.DB_CONNECTION_STRING }}" \
-                --connection-string-type SQLAzure
+                --connection-string-type SQLServer
 
         - name: Deploy to Azure Web App
           uses: azure/webapps-deploy@v3
