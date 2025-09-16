@@ -39,31 +39,40 @@ jobs:
           path: ./publish
 
   deploy:
-    runs-on: windows-latest
-    needs: build
-    permissions:
-      id-token: write
-      contents: read
+      runs-on: windows-latest
+      needs: build
+      permissions:
+        id-token: write
+        contents: read
 
-    steps:
-      - name: Download artifact from build job
-        uses: actions/download-artifact@v4
-        with:
-          name: publish
-          path: ./publish
+      steps:
+        - name: Download artifact from build job
+          uses: actions/download-artifact@v4
+          with:
+            name: publish
+            path: ./publish
 
-      - name: Login to Azure
-        uses: azure/login@v2
-        with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_A51CA3BA328941898067614D101F19B7 }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_2A22B2885450430CB9A001F2DB4AFDFF }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_91599AFDEC164AF8A0249325E6645236 }}
+        - name: Login to Azure
+          uses: azure/login@v2
+          with:
+            client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_A51CA3BA328941898067614D101F19B7 }}
+            tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_2A22B2885450430CB9A001F2DB4AFDFF }}
+            subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_91599AFDEC164AF8A0249325E6645236 }}
 
-      - name: Deploy to Azure Web App
-        uses: azure/webapps-deploy@v3
-        with:
-          app-name: 'afc-test-david-p-mitchell'
-          slot-name: 'Production'
-          package: ./publish
-          app-settings: |
-            ConnectionStrings__DefaultConnection=${{ secrets.DB_CONNECTION_STRING }}
+        - name: Set Azure Web App connection string
+          uses: azure/CLI@v1
+          with:
+            azcliversion: 3.0.0
+            inlineScript: |
+              az webapp config connection-string set \
+                --name afc-test-david-p-mitchell \
+                --resource-group Ars_App \
+                --settings DefaultConnection="${{ secrets.DB_CONNECTION_STRING }}" \
+                --connection-string-type SQLAzure
+
+        - name: Deploy to Azure Web App
+          uses: azure/webapps-deploy@v3
+          with:
+            app-name: 'afc-test-david-p-mitchell'
+            slot-name: 'Production'
+            package: ./publish
