@@ -6,7 +6,7 @@
         public required string PlayerName { get; set; }
 
         public required PositionEnum Position { get; set; } 
-        public required short JerseyNumber { get; set; }
+        public required byte JerseyNumber { get; set; }
         public int GoalsScored { get; set; } = 0;
     }
 }
