@@ -50,6 +50,6 @@ public class PlayersController(IPlayerService _playerService) : Controller
         return NoContent();
     }
 
-    private bool HasValidJerseyNumber(PlayerModel player) => player.JerseyNumber >= 1 && player.JerseyNumber <= 99;
-    private bool HasPlayerId(PlayerModel player) => player.PlayerId > 0;
+    private static bool HasValidJerseyNumber(PlayerModel player) => player.JerseyNumber >= 1 && player.JerseyNumber <= 99;
+    private static bool HasPlayerId(PlayerModel player) => player.PlayerId > 0;
 }
