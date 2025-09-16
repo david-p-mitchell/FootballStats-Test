@@ -4,17 +4,18 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AFCStatsApp.Controllers;
 
-public class PlayersController(IPlayerService _service) : Controller
+public class PlayersController(IPlayerService _playerService) : Controller
 {
-    public IActionResult Index()
+    public async Task<IActionResult> Index()
     {
-        return View();
+        var players = await _playerService.GetAllAsync();
+        return View(players); // pass the list to the view
     }
 
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
-        var players = await _service.GetAllAsync();
+        var players = await _playerService.GetAllAsync();
         return Ok(players);
     }
 
@@ -25,7 +26,7 @@ public class PlayersController(IPlayerService _service) : Controller
         if (HasPlayerId(player)) return BadRequest("A new player cannot have a Player Id");
         if (!HasValidJerseyNumber(player)) return BadRequest("Jersey number must be 1-99");
 
-        var newPlayer = await _service.AddAsync(player);
+        var newPlayer = await _playerService.AddAsync(player);
         return Ok(newPlayer);
     }
 
@@ -35,7 +36,7 @@ public class PlayersController(IPlayerService _service) : Controller
         if (!ModelState.IsValid) return BadRequest();
         if (!HasValidJerseyNumber(player)) return BadRequest("Jersey number must be 1-99");
 
-        var newPlayer = await _service.UpdateAsync(player);
+        var newPlayer = await _playerService.UpdateAsync(player);
         return Ok(newPlayer);
     }
 
@@ -44,7 +45,7 @@ public class PlayersController(IPlayerService _service) : Controller
     {
         if (!ModelState.IsValid) return BadRequest();
         
-        var deletedPlayer = await _service.DeleteAsync(playerId);
+        var deletedPlayer = await _playerService.DeleteAsync(playerId);
         if (!deletedPlayer) return NotFound("Player not found");
         return NoContent();
     }
