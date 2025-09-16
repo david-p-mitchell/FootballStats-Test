@@ -12,8 +12,17 @@ public class PlayersController(IPlayerService _playerService) : Controller
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
-        var players = await _playerService.GetAllAsync();
-        return Ok(players);
+        try
+        {
+            var players = await _playerService.GetAllAsync();
+            return Ok(players);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+            throw;
+
+        }
     }
 
     [HttpPost]
