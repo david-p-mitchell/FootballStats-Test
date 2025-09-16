@@ -19,9 +19,9 @@ public class PlayersControllerTests
     }
 
     [Fact]
-    public async Task Index_ReturnsViewResult()
+    public void Index_ReturnsViewResult()
     {
-        var result = await _controller.Index();
+        var result = _controller.Index();
         Assert.IsType<ViewResult>(result);
     }
 
