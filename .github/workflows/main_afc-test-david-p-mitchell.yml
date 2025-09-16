@@ -10,7 +10,7 @@ jobs:
   build:
     runs-on: windows-latest
     permissions:
-      contents: read # Required for actions/checkout
+      contents: read
 
     steps:
       - uses: actions/checkout@v4
@@ -23,7 +23,7 @@ jobs:
       - name: Restore dependencies
         run: dotnet restore ./AFCStatsApp/AFCStatsApp/AFCStatsApp.csproj
 
-      - name: Build with dotnet
+      - name: Build main project
         run: dotnet build ./AFCStatsApp/AFCStatsApp/AFCStatsApp.csproj --configuration Release
 
       - name: Run tests
@@ -32,25 +32,25 @@ jobs:
       - name: Publish app
         run: dotnet publish ./AFCStatsApp/AFCStatsApp/AFCStatsApp.csproj -c Release -o ./publish
 
-      - name: Upload artifact for deployment job
+      - name: Upload artifact for deployment
         uses: actions/upload-artifact@v4
         with:
-          name: .net-app
+          name: publish
           path: ./publish
 
   deploy:
     runs-on: windows-latest
     needs: build
     permissions:
-      id-token: write # Required for requesting the JWT
-      contents: read # Required for actions/checkout
+      id-token: write
+      contents: read
 
     steps:
       - name: Download artifact from build job
         uses: actions/download-artifact@v4
         with:
-          name: .net-app
-      
+          name: publish
+
       - name: Login to Azure
         uses: azure/login@v2
         with:
@@ -59,7 +59,6 @@ jobs:
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_91599AFDEC164AF8A0249325E6645236 }}
 
       - name: Deploy to Azure Web App
-        id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
           app-name: 'afc-test-david-p-mitchell'
