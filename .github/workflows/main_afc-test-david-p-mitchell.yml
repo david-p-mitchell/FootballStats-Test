@@ -65,3 +65,5 @@ jobs:
           app-name: 'afc-test-david-p-mitchell'
           slot-name: 'Production'
           package: ./publish
+          app-settings: |
+            ConnectionStrings__DefaultConnection=${{ secrets.DB_CONNECTION_STRING }}
