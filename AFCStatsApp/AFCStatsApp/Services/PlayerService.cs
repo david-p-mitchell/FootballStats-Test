@@ -21,4 +21,12 @@ public class PlayerService(IPlayerRepository playerRepository) : IPlayerService
     }
 
     public async Task<PlayerModel> UpdateAsync(PlayerModel playerToBeUpdated) => await _playerRepository.UpdateAsync(playerToBeUpdated);
+
+    public async Task<bool> ExistsByJerseyNumberAsync(byte jerseyNumber, int? excludePlayerId = null)
+    {
+        var allPlayers = await _playerRepository.GetAllAsync();
+        if(excludePlayerId == null) return allPlayers.Any(p => p.JerseyNumber == jerseyNumber);
+        return allPlayers.Any(p => p.JerseyNumber == jerseyNumber && p.PlayerId != excludePlayerId);
+        
+    }
 }

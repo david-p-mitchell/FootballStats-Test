@@ -1,4 +1,5 @@
 ﻿using AFCStatsApp.Models;
+using System.Numerics;
 
 namespace AFCStatsApp.Interfaces.Services
 {
@@ -8,5 +9,6 @@ namespace AFCStatsApp.Interfaces.Services
         public Task<PlayerModel> AddAsync(PlayerModel newPlayer);
         public Task<PlayerModel> UpdateAsync(PlayerModel playerToBeUpdated);
         public Task<bool> DeleteAsync(int playerId);
+        public Task<bool> ExistsByJerseyNumberAsync(byte jerseyNumber, int? playerId = null);
     }
 }

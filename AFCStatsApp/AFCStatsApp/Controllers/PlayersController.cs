@@ -25,15 +25,17 @@ public class PlayersController(IPlayerService _playerService) : Controller
         }
     }
 
-    [HttpPost]
-    public async Task<IActionResult> Add(PlayerModel player)
+    [HttpPost("/api/players/add")]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Add([FromBody]PlayerModel player)
     {
-        if (!ModelState.IsValid) return BadRequest();
-        if (HasPlayerId(player)) return BadRequest("A new player cannot have a Player Id");
-        if (!HasValidJerseyNumber(player)) return BadRequest("Jersey number must be 1-99");
+        if (!ModelState.IsValid) return BadRequest(new { errors = "Invalid player data" });
+        if (HasPlayerId(player)) return BadRequest(new { errors = "A new player cannot have a Player Id" });
+        if (!HasValidJerseyNumber(player)) return BadRequest(new { errors = "Jersey number must be 1-99" });
+        if(await _playerService.ExistsByJerseyNumberAsync(player.JerseyNumber)) return BadRequest(new { errors = "Jersey number already in use" });
 
         var newPlayer = await _playerService.AddAsync(player);
-        return Ok(newPlayer);
+        return Ok(new { success = true, player = newPlayer });
     }
 
     [HttpPost]
@@ -41,6 +43,7 @@ public class PlayersController(IPlayerService _playerService) : Controller
     {
         if (!ModelState.IsValid) return BadRequest();
         if (!HasValidJerseyNumber(player)) return BadRequest("Jersey number must be 1-99");
+        if (await _playerService.ExistsByJerseyNumberAsync(player.JerseyNumber, player.PlayerId)) return BadRequest(new { errors = "Updated Jersey number already in use by another player." });
 
         var newPlayer = await _playerService.UpdateAsync(player);
         return Ok(newPlayer);
