@@ -2,6 +2,6 @@ CREATE TABLE Players (
     PlayerId INT IDENTITY(1,1) PRIMARY KEY,
     PlayerName NVARCHAR(100) NOT NULL,
     Position NVARCHAR(50) NOT NULL,
-    JerseyNumber TINYINT NOT NULL,
+    JerseyNumber TINYINT UNIQUE NOT NULL,
     GoalsScored INT NOT NULL DEFAULT 0
 );
