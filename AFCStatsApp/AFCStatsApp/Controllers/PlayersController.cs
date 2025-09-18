@@ -6,17 +6,23 @@ namespace AFCStatsApp.Controllers;
 
 public class PlayersController(IPlayerService _playerService) : Controller
 {
-    public async Task<IActionResult> Index()
-    {
-        var players = await _playerService.GetAllAsync();
-        return View(players); // pass the list to the view
-    }
+    public IActionResult Index() => View(); // pass the list to the view
+
 
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
-        var players = await _playerService.GetAllAsync();
-        return Ok(players);
+        try
+        {
+            var players = await _playerService.GetAllAsync();
+            return Ok(players);
+        }
+        catch (Exception ex)
+        {
+            return Problem(ex.Message);
+            throw;
+
+        }
     }
 
     [HttpPost]

@@ -30,7 +30,7 @@ public class PlayersControllerTests
     {
         var players = new List<PlayerModel>
         {
-            new PlayerModel { PlayerId = 1, PlayerName = "John", Position = PositionEnum.Forward, JerseyNumber = 10 }
+            new() { PlayerId = 1, PlayerName = "John", Position = PositionEnum.Forward, JerseyNumber = 10 }
         };
         _serviceMock.Setup(s => s.GetAllAsync()).ReturnsAsync(players);
 
@@ -64,7 +64,7 @@ public class PlayersControllerTests
     [Theory]
     [InlineData(0)]
     [InlineData(100)]
-    public async Task Add_InvalidJerseyNumber_ReturnsBadRequest(short jerseyNumber)
+    public async Task Add_InvalidJerseyNumber_ReturnsBadRequest(byte jerseyNumber)
     {
         var player = new PlayerModel { PlayerName = "John", Position = PositionEnum.Goalkeeper, JerseyNumber = jerseyNumber };
 
@@ -101,7 +101,7 @@ public class PlayersControllerTests
     [Theory]
     [InlineData(0)]
     [InlineData(100)]
-    public async Task Update_InvalidJerseyNumber_ReturnsBadRequest(short jerseyNumber)
+    public async Task Update_InvalidJerseyNumber_ReturnsBadRequest(byte jerseyNumber)
     {
         var player = new PlayerModel { PlayerId = 1, PlayerName = "Mikel", Position = PositionEnum.Defender, JerseyNumber = jerseyNumber };
 

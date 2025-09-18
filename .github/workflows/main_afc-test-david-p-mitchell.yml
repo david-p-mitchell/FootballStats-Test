@@ -1,0 +1,78 @@
+name: Build, test, and deploy ASP.Net Core app to Azure Web App - afc-test-david-p-mitchell
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up .NET Core
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.x'
+
+      - name: Restore dependencies
+        run: dotnet restore ./AFCStatsApp/AFCStatsApp/AFCStatsApp.csproj
+
+      - name: Build main project
+        run: dotnet build ./AFCStatsApp/AFCStatsApp/AFCStatsApp.csproj --configuration Release
+
+      - name: Run tests
+        run: dotnet test ./AFCStatsApp/AFCStatsApp.Tests/AFCStatsApp.Tests.csproj --configuration Release
+
+      - name: Publish app
+        run: dotnet publish ./AFCStatsApp/AFCStatsApp/AFCStatsApp.csproj -c Release -o ./publish
+
+      - name: Upload artifact for deployment
+        uses: actions/upload-artifact@v4
+        with:
+          name: publish
+          path: ./publish
+
+  deploy:
+      runs-on: ubuntu-latest
+      needs: build
+      permissions:
+        id-token: write
+        contents: read
+
+      steps:
+        - name: Download artifact from build job
+          uses: actions/download-artifact@v4
+          with:
+            name: publish
+            path: ./publish
+
+        - name: Login to Azure
+          uses: azure/login@v2
+          with:
+            client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_A51CA3BA328941898067614D101F19B7 }}
+            tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_2A22B2885450430CB9A001F2DB4AFDFF }}
+            subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_91599AFDEC164AF8A0249325E6645236 }}
+
+        - name: Set Azure Web App connection string
+          uses: azure/CLI@v1
+          with:
+            azcliversion: '2.77.0'   # <- use a valid Azure CLI 2.x version
+            inlineScript: |
+              az webapp config connection-string set \
+                --name afc-test-david-p-mitchell \
+                --resource-group Ars_App \
+                --settings FootballDb="${{ secrets.DB_CONNECTION_STRING }}" \
+                --connection-string-type SQLServer
+
+        - name: Deploy to Azure Web App
+          uses: azure/webapps-deploy@v3
+          with:
+            app-name: 'afc-test-david-p-mitchell'
+            slot-name: 'Production'
+            package: ./publish
