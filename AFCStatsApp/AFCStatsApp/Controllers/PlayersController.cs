@@ -29,15 +29,16 @@ public class PlayersController(IPlayerService _playerService) : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Add([FromBody]PlayerModel player)
     {
-        if (!ModelState.IsValid || player == null) return BadRequest(new { errors = "Invalid player data" });
-        if (HasPlayerId(player)) return BadRequest(new { errors = "A new player cannot have a Player Id" });
-        if (!HasValidJerseyNumber(player)) return BadRequest(new { errors = "Jersey number must be 1-99" });
+        if (!ModelState.IsValid || player == null) return BadRequest(new ErrorResultModel() { Errors = "Invalid player data" });
+        if (HasPlayerId(player)) return BadRequest(new ErrorResultModel() { Errors = "A new player cannot have a Player Id" });
+        if (!HasValidJerseyNumber(player)) return BadRequest(new ErrorResultModel() { Errors = "Jersey number must be 1-99" });
         try
         {
-            if (await _playerService.ExistsByJerseyNumberAsync(player.JerseyNumber)) return BadRequest(new { errors = "Jersey number already in use" });
+            if (await _playerService.ExistsByJerseyNumberAsync(player.JerseyNumber)) return BadRequest(new ErrorResultModel() { Errors = "Jersey number already in use" });
 
             var newPlayer = await _playerService.AddAsync(player);
-            return Ok(new { success = true, player = newPlayer });
+            var personResult = new PlayerResultModel { Player = newPlayer, Success = true };
+            return Ok(personResult);
         }
         catch (Exception)
         {
@@ -54,11 +55,12 @@ public class PlayersController(IPlayerService _playerService) : Controller
         try
         {
             if (!ModelState.IsValid) return BadRequest();
-            if (!HasValidJerseyNumber(player)) return BadRequest("Jersey number must be 1-99");
-            if (await _playerService.ExistsByJerseyNumberAsync(player.JerseyNumber, player.PlayerId)) return BadRequest(new { errors = "Updated Jersey number already in use by another player." });
+            if (!HasValidJerseyNumber(player)) return BadRequest(new ErrorResultModel() { Errors = "Jersey number must be 1-99" });
+            if (await _playerService.ExistsByJerseyNumberAsync(player.JerseyNumber, player.PlayerId)) return BadRequest(new ErrorResultModel() { Errors = "Updated Jersey number already in use by another player." });
 
             var newPlayer = await _playerService.UpdateAsync(player);
-            return Ok(new { success = true, player = newPlayer });
+            var personResult = new PlayerResultModel { Player = newPlayer, Success = true };
+            return Ok(personResult);
         }
         catch(Exception)
         {
@@ -77,7 +79,8 @@ public class PlayersController(IPlayerService _playerService) : Controller
 
             var deletedPlayer = await _playerService.DeleteAsync(playerId);
             if (!deletedPlayer) return NotFound("Player not found");
-            return Ok(new { success = true });
+            var resultModel = new ResultModel() {  Success = true };
+            return Ok(resultModel);
         }
         catch (Exception)
         {
