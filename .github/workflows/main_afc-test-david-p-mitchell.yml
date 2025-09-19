@@ -59,10 +59,21 @@ jobs:
             tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_2A22B2885450430CB9A001F2DB4AFDFF }}
             subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_91599AFDEC164AF8A0249325E6645236 }}
 
+        - name: Set Azure Web App app settings
+          uses: azure/CLI@v1
+          with:
+            azcliversion: '2.77.0'
+            inlineScript: |
+              az webapp config appsettings set \
+                --name afc-test-david-p-mitchell \
+                --resource-group Ars_App \
+                --settings FootballDataOrgApi__ApiKey="${{ secrets.FOOTBALL_DATA_API_KEY }}" \
+                           FootballDataOrgApi__BaseUrl="https://api.football-data.org/v4/"
+
         - name: Set Azure Web App connection string
           uses: azure/CLI@v1
           with:
-            azcliversion: '2.77.0'   # <- use a valid Azure CLI 2.x version
+            azcliversion: '2.77.0'  
             inlineScript: |
               az webapp config connection-string set \
                 --name afc-test-david-p-mitchell \
