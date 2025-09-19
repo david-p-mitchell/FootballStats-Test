@@ -2,13 +2,14 @@
     ViewBag.Title = "Players";
 }
 
-
 <link href="https://cdn.datatables.net/v/dt/dt-2.3.4/datatables.min.css" rel="stylesheet" integrity="sha384-pmGS6IIcXhAVIhcnh9X/mxffzZNHbuxboycGuQQoP3pAbb0SwlSUUHn2v22bOenI" crossorigin="anonymous">
 
 <div class="container mt-4">
     <div class="d-flex justify-content-between align-items-center flex-wrap">
         <h2 class="mb-0 flex-shrink-0">Players List</h2>
-        <button class="btn btn-primary mt-sm-0">Add Player</button>
+        <button class="btn btn-primary" onclick="openPlayerModal()">
+            Add Player
+        </button>
     </div>
     <table id="playersTable" class="table table-striped">
         <thead>
@@ -22,11 +23,20 @@
         </thead>
         <tbody></tbody>
     </table>
+    @Html.AntiForgeryToken()
 </div>
+
+<div id="playerModalRoot"></div>
 
 @section Scripts {
     <script src="https://cdn.datatables.net/v/dt/dt-2.3.4/datatables.min.js" integrity="sha384-X2pTSfom8FUa+vGQ+DgTCSyBZYkC1RliOduHa0X96D060s7Q//fnOh3LcazRNHyo" crossorigin="anonymous"></script>
     <script src="@Url.Content("~/js/playersTable.js")"></script>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    <script src="@Url.Content("~/js/toast.js")"></script>
+    <script src="@Url.Content("~/js/playerApi.js")"></script>
+    <script type="text/babel" src="@Url.Content("~/js/playerModal/playerModal.jsx")"></script>
+    <script type="text/babel" src="@Url.Content("~/js/playerActions.js")"></script>
     
-
 }
