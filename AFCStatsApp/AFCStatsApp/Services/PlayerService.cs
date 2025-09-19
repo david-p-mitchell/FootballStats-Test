@@ -27,6 +27,5 @@ public class PlayerService(IPlayerRepository playerRepository) : IPlayerService
         var allPlayers = await _playerRepository.GetAllAsync();
         if(excludePlayerId == null) return allPlayers.Any(p => p.JerseyNumber == jerseyNumber);
         return allPlayers.Any(p => p.JerseyNumber == jerseyNumber && p.PlayerId != excludePlayerId);
-        
     }
 }
