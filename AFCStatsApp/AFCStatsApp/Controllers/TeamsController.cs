@@ -13,7 +13,7 @@ namespace AFCStatsApp.Controllers
         public IActionResult Index() => View("Matches");
 
         [HttpGet("/api/teams/{teamId}/matches")]
-        public async Task<IActionResult> Add(int teamId= 57)
+        public async Task<IActionResult> GetTeamMatches(int teamId= 57)
         {
             
             if (teamId <= 0) return BadRequest(new ErrorResultModel() {  Errors = "Invalid Team Id"});
