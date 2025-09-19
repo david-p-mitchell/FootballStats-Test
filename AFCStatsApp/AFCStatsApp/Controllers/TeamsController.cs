@@ -15,44 +15,19 @@ namespace AFCStatsApp.Controllers
         [HttpGet("/api/teams/{teamId}/matches")]
         public async Task<IActionResult> Add(int teamId= 57)
         {
-            var returnedMatches = new List<Match>();
+            
             if (teamId <= 0) return BadRequest(new ErrorResultModel() {  Errors = "Invalid Team Id"});
             
             try
             {
                 var cacheKey = $"matches_{teamId}";
-                var matchesStore = await _cache.GetOrCreateAsync(cacheKey, async entry =>
-                {
-                    var fetched = await _matchesApi.GetMatchesAsync(teamId);
-
-                    
-                    var upcomingMatch = fetched.Matches
-                        .Where(m => !IsFinishedMatch(m)) 
-                        .OrderBy(m => m.UtcDate) 
-                        .FirstOrDefault();
-
-                    if (upcomingMatch != null)
-                    {
-                        var untilKickoff = upcomingMatch.UtcDate - DateTime.UtcNow;
-
-                        if (untilKickoff > TimeSpan.Zero) entry.AbsoluteExpirationRelativeToNow = untilKickoff;
-                        else entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(1);
-                    }
-                    else
-                    {
-                        entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(30);
-                    }
-
-                    return fetched;
-                });
-
-                var completedMatchCount = matchesStore.Matches.Count(match => IsFinishedMatch(match));
-                returnedMatches.AddRange(matchesStore.Matches.Take(completedMatchCount));
-                returnedMatches.AddRange(matchesStore.Matches.Skip(completedMatchCount).Take(5));
+                var matchesStore = await GetMatchData(teamId, cacheKey);
+                if (matchesStore == null) return Problem("There are no matches available");
+                var returnedMatches = GetResultsAndSubsequentMatchesFromAllTeamMatches(matchesStore, 5);
 
                 return Ok(returnedMatches);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return Problem("Failed to get Matches");
                 throw;
@@ -60,7 +35,45 @@ namespace AFCStatsApp.Controllers
             }
         }
 
-        private static Match GetNextMatch(MatchModel)
+        private async Task<MatchStoreModel?> GetMatchData(int teamId, string cacheKey)
+        {
+            return await _cache.GetOrCreateAsync(cacheKey, async entry =>
+            {
+                var fetched = await _matchesApi.GetMatchesAsync(teamId);
+
+
+                var upcomingMatch = GetNextMatch(fetched);
+
+                if (upcomingMatch != null)
+                {
+                    var untilKickoff = upcomingMatch.UtcDate - DateTime.UtcNow;
+
+                    if (untilKickoff > TimeSpan.Zero) entry.AbsoluteExpirationRelativeToNow = untilKickoff;
+                    else entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(1);
+                }
+                else
+                {
+                    entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(30);
+                }
+
+                return fetched;
+            });
+        }
+
+        private static List<Match> GetResultsAndSubsequentMatchesFromAllTeamMatches(MatchStoreModel matchesStore, int nextFixtureCount = 5)
+        {
+            var returnedMatches = new List<Match>();
+            var completedMatchCount = matchesStore.Matches.Count(match => IsFinishedMatch(match));
+            returnedMatches.AddRange(matchesStore.Matches.Take(completedMatchCount));
+            returnedMatches.AddRange(matchesStore.Matches.Skip(completedMatchCount).Take(nextFixtureCount));
+
+            return returnedMatches;
+        }
+
+        private static Match? GetNextMatch(MatchStoreModel matchStore) => matchStore.Matches
+                        .Where(m => !IsFinishedMatch(m))
+                        .OrderBy(m => m.UtcDate)
+                        .FirstOrDefault();
 
         private static bool IsFinishedMatch(Match match) => match.Status == "FINISHED";
     }
