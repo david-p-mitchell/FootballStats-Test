@@ -73,7 +73,7 @@ jobs:
         - name: Set Azure Web App connection string
           uses: azure/CLI@v1
           with:
-            azcliversion: '2.77.0'   # <- use a valid Azure CLI 2.x version
+            azcliversion: '2.77.0'  
             inlineScript: |
               az webapp config connection-string set \
                 --name afc-test-david-p-mitchell \
