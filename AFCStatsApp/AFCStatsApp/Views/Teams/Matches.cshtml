@@ -1,0 +1,48 @@
+﻿@page
+@{
+    ViewBag.Title = "Players";
+}
+
+<div>
+    @Html.AntiForgeryToken()
+    <h1 style="text-align: center;"> Matches</h1>
+    <table id="matchesTable" class="table table-striped">
+    </table>
+</div>
+
+<style>
+    p {
+        text-align:center;
+        margin-bottom:0;
+    }
+
+    .v-center {
+        vertical-align: middle !important; 
+    }
+
+    .cell-center {
+        display: flex;
+        justify-content: center; 
+        align-items: center; 
+    }
+
+    .team-img {
+        width: auto;
+    }
+
+    #matchesTable thead {
+        display: none;
+    }
+
+    #matchesTable tr {
+        height: auto; 
+    }
+
+</style>
+
+@section Scripts {
+    <script src="https://cdn.datatables.net/v/dt/dt-2.3.4/datatables.min.js" integrity="sha384-X2pTSfom8FUa+vGQ+DgTCSyBZYkC1RliOduHa0X96D060s7Q//fnOh3LcazRNHyo" crossorigin="anonymous"></script>
+    <script src="@Url.Content("~/js/matchesTable.js")"></script>
+    
+}
+
