@@ -19,7 +19,7 @@ public class PlayerRepository : IPlayerRepository
     /// <returns></returns>
     public async Task<List<PlayerModel>> GetAllAsync()
     {
-        return await _context.Players.ToListAsync();
+        return await _context.Players.AsNoTracking().ToListAsync();
     }
 
     /// <summary>
@@ -42,9 +42,25 @@ public class PlayerRepository : IPlayerRepository
     // Update an existing player
     public async Task<PlayerModel> UpdateAsync(PlayerModel player)
     {
-        _context.Players.Update(player);
-        await _context.SaveChangesAsync();
-        return player;
+        try
+        {
+            var existingPlayer = await _context.Players.FirstOrDefaultAsync(p => p.PlayerId == player.PlayerId);
+            existingPlayer!.PlayerName = player.PlayerName;
+            existingPlayer!.JerseyNumber = player.JerseyNumber;
+            existingPlayer!.Position = player.Position;
+            existingPlayer!.GoalsScored = player.GoalsScored;
+            // ... update any other fields
+
+            await _context.SaveChangesAsync();
+
+            return existingPlayer;
+        }
+        catch (Exception ex)
+        {
+
+            throw;
+        }
+
     }
 
     // Delete a player
