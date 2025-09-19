@@ -51,7 +51,7 @@ public class PlayerRepository(AppDbContext context) : IPlayerRepository
 
             return existingPlayer;
         }
-        catch (Exception ex)
+        catch (Exception)
         {
 
             throw;
