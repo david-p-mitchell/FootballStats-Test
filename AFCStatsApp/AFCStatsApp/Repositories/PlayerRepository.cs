@@ -5,13 +5,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AFCStatsApp.Repositories;
 
-public class PlayerRepository : IPlayerRepository
+public class PlayerRepository(AppDbContext context) : IPlayerRepository
 {
-    private readonly AppDbContext _context;
-    public PlayerRepository(AppDbContext context)
-    {
-        _context = context;
-    }
+    private readonly AppDbContext _context = context;
 
     /// <summary>
     /// Get All Players

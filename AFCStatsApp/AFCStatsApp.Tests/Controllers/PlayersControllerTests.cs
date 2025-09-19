@@ -1,6 +1,7 @@
 ﻿using AFCStatsApp.Controllers;
 using AFCStatsApp.Interfaces.Services;
 using AFCStatsApp.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using System.Numerics;
@@ -47,7 +48,7 @@ public class PlayersControllerTests
 
         var result = await _controller.Add(new PlayerModel { PlayerName = "", Position = PositionEnum.Midfielder, JerseyNumber = 5 });
 
-        Assert.IsType<BadRequestResult>(result);
+        Assert.IsType<BadRequestObjectResult>(result);
     }
 
     [Fact]
@@ -58,7 +59,9 @@ public class PlayersControllerTests
         var result = await _controller.Add(player);
 
         var badRequest = Assert.IsType<BadRequestObjectResult>(result);
-        Assert.Equal("A new player cannot have a Player Id", badRequest.Value);
+        var endpointResult = badRequest.Value as ErrorResultModel;
+        Assert.False(endpointResult!.Success);
+        Assert.Equal("A new player cannot have a Player Id", endpointResult.Errors);
     }
 
     [Theory]
@@ -71,7 +74,10 @@ public class PlayersControllerTests
         var result = await _controller.Add(player);
 
         var badRequest = Assert.IsType<BadRequestObjectResult>(result);
-        Assert.Equal("Jersey number must be 1-99", badRequest.Value);
+
+        var endpointResult = badRequest.Value as ErrorResultModel;
+        Assert.False(endpointResult!.Success);
+        Assert.Equal("Jersey number must be 1-99", endpointResult.Errors);
     }
 
     [Fact]
@@ -83,7 +89,9 @@ public class PlayersControllerTests
         var result = await _controller.Add(player);
 
         var okResult = Assert.IsType<OkObjectResult>(result);
-        Assert.Equal(player, okResult.Value);
+        var endpointResult = okResult.Value as PlayerResultModel;
+        Assert.True(endpointResult!.Success);
+        Assert.Equal(player, endpointResult.Player);
     }
 
     [Fact]
@@ -108,7 +116,9 @@ public class PlayersControllerTests
         var result = await _controller.Update(player);
 
         var badRequest = Assert.IsType<BadRequestObjectResult>(result);
-        Assert.Equal("Jersey number must be 1-99", badRequest.Value);
+        var endpointResult = badRequest.Value as ErrorResultModel;
+        Assert.False(endpointResult!.Success);
+        Assert.Equal("Jersey number must be 1-99", endpointResult.Errors);
     }
 
     [Fact]
@@ -120,7 +130,10 @@ public class PlayersControllerTests
         var result = await _controller.Update(player);
 
         var okResult = Assert.IsType<OkObjectResult>(result);
-        Assert.Equal(player, okResult.Value);
+        
+        var endpointResult = okResult.Value as PlayerResultModel;
+        Assert.True(endpointResult!.Success);
+        Assert.Equal(player, endpointResult.Player);
     }
 
     [Fact]
