@@ -64,7 +64,7 @@ dotnet user-secrets set "FootballDataOrgApi:ApiKey" "YOUR_API_KEY_HERE"
 
 ### Fresh Database
 1. Create the initial migration:
-1. 
+
 ```bash
 dotnet ef migrations add InitialCreate
 ```
