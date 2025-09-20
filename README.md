@@ -28,14 +28,17 @@ This project is a testbed for experimenting with player management, stats tracki
 ## Setup & Run
 
 ### 1. Clone the repository
+```bash
 git clone https://github.com/david-p-mitchell/FootballStats-Test.git
 cd FootballStats-Test/AFCStatsApp
-
+```
 ### 2. Install EF Core Tools
+```bash
 dotnet tool install --global dotnet-ef
-
+```
 ### 3. Configure database connection and football-data.org base url
 Edit appsettings.json:
+```json
 {
   "ConnectionStrings": {
     "DefaultConnection": "Server=localhost;Database=FootballStatsDb;Trusted_Connection=True;"
@@ -45,11 +48,12 @@ Edit appsettings.json:
     "ApiKey": ""
   }
 }
-
+```
 ### 4. Set secrets / API key
+```bash
 dotnet user-secrets init
 dotnet user-secrets set "FootballDataOrgApi:ApiKey" "YOUR_API_KEY_HERE"
-
+```
 ---
 
 ## EF Core Migrations
