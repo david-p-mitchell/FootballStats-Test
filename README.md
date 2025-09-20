@@ -2,6 +2,7 @@
 
 An ASP.NET Core web application for managing and displaying football statistics.
 This project is a testbed for experimenting with player management, stats tracking, and UI rendering.
+It also features Match results and subsequent fixtures.
 
 ---
 
