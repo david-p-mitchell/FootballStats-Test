@@ -9,7 +9,6 @@ using Refit;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 
 
 builder.Services.AddDbContext<AppDbContext>(options =>
@@ -23,7 +22,6 @@ builder.Services.Configure<FootballDataOrgApiSettings>(
     builder.Configuration.GetSection("FootballApi")
 );
 
-// Read settings to configure Refit client
 var apiSettings = builder.Configuration.GetSection("FootballDataOrgApi").Get<FootballDataOrgApiSettings>();
 
 builder.Services.AddRefitClient<IMatchesAPI>()
@@ -36,14 +34,20 @@ builder.Services.AddRefitClient<IMatchesAPI>()
 builder.Services.AddScoped<IPlayerRepository, PlayerRepository>();
 builder.Services.AddScoped<IPlayerService, PlayerService>();
 builder.Services.AddControllersWithViews();
-
+builder.WebHost.ConfigureKestrel(options =>
+{
+    options.ListenAnyIP(5132);
+    options.ListenAnyIP(7267, listenOptions =>
+    {
+        listenOptions.UseHttps();
+    });
+});
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+    
     app.UseHsts();
 }
 
