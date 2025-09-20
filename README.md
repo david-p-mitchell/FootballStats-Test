@@ -1,4 +1,3 @@
-
 # FootballStats-Test
 
 An ASP.NET Core web application for managing and displaying football statistics.
@@ -7,6 +6,7 @@ This project is a testbed for experimenting with player management, stats tracki
 ---
 
 ## Features
+
 - Player listing and stats
 - Match results and upcoming fixtures
 - Interactive frontend with HTML/JS/CSS + DataTables
@@ -18,6 +18,7 @@ This project is a testbed for experimenting with player management, stats tracki
 ---
 
 ## Prerequisites
+
 - [.NET SDK 8.0+](https://dotnet.microsoft.com/download)
 - SQL Server or Azure SQL
 - Valid Football-Data.org API key
@@ -41,6 +42,7 @@ dotnet tool install --global dotnet-ef
 ```
 
 ### 3. Configure database connection and football-data.org base url
+
 Edit appsettings.json:
 
 ```json
@@ -67,6 +69,7 @@ dotnet user-secrets set "FootballDataOrgApi:ApiKey" "YOUR_API_KEY_HERE"
 ## EF Core Migrations
 
 ### Fresh Database
+
 1. Create the initial migration:
 
 ```bash
@@ -80,6 +83,7 @@ dotnet ef database update
 ```
 
 ### Existing Database / Preserve Data
+
 1. Backup your database.
 2. Create a baseline migration ignoring existing tables:
 
@@ -92,16 +96,17 @@ dotnet ef migrations add InitialCreate --ignore-changes
 ```bash
 dotnet ef database update
 ```
+
 ---
-##Setup HTTPS
+
+## Setup HTTPS
+
 Check is https has a cert.
 Then trust it.
 
 ```bash
 dotnet dev-certs https --check
-
 dotnet dev-certs https --trust
-
 ```
 
 ## Run the app
@@ -113,7 +118,8 @@ dotnet run
 ```
 
 - Open browser: https://localhost:7267 (if you have made the dev -cert trusted?)
-Also on: http://localhost:5132
+- Also on: http://localhost:5132
 
 ## License
+
 MIT License
