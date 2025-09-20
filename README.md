@@ -82,7 +82,8 @@ dotnet ef database update
 ```bash
 dotnet ef migrations add InitialCreate --ignore-changes
 ```
-3. Apply the migration (records it in `__EFMigrationsHistory` without modifying tables):
+3. Apply the migration
+
 ```bash
 dotnet ef database update
 ```
