@@ -32,10 +32,12 @@ This project is a testbed for experimenting with player management, stats tracki
 git clone https://github.com/david-p-mitchell/FootballStats-Test.git
 cd FootballStats-Test/AFCStatsApp
 ```
+
 ### 2. Install EF Core Tools
 ```bash
 dotnet tool install --global dotnet-ef
 ```
+
 ### 3. Configure database connection and football-data.org base url
 Edit appsettings.json:
 ```json
@@ -49,21 +51,26 @@ Edit appsettings.json:
   }
 }
 ```
+
 ### 4. Set secrets / API key
 ```bash
 dotnet user-secrets init
 dotnet user-secrets set "FootballDataOrgApi:ApiKey" "YOUR_API_KEY_HERE"
 ```
+
 ---
 
 ## EF Core Migrations
 
 ### Fresh Database
 1. Create the initial migration:
+1. 
 ```bash
 dotnet ef migrations add InitialCreate
 ```
+
 2. Apply the migration to create database and tables:
+
 ```bash
 dotnet ef database update
 ```
@@ -71,6 +78,7 @@ dotnet ef database update
 ### Existing Database / Preserve Data
 1. Backup your database.
 2. Create a baseline migration ignoring existing tables:
+
 ```bash
 dotnet ef migrations add InitialCreate --ignore-changes
 ```
