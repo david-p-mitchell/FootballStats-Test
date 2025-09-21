@@ -1,5 +1,6 @@
 ﻿using AFCStatsApp.Interfaces.Services;
 using AFCStatsApp.Models;
+using AFCStatsApp.Models.Player;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 

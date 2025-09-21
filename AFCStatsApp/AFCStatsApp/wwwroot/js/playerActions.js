@@ -1,11 +1,12 @@
 ﻿let playerActions = {};
+
 playerActions.addPlayer = () => {
-    openPlayerModal();
-}
+    openPlayerModal(); // no playerId -> server renders empty modal
+};
 
 playerActions.editPlayer = (rowElement) => {
     const player = playersDataTable.row($(rowElement).closest('tr')).data();
-    openPlayerModal(player);
+    openPlayerModal(player.playerId); // pass ID to controller
 };
 
 playerActions.deletePlayer = async (rowElement) => {
@@ -18,7 +19,7 @@ playerActions.deletePlayer = async (rowElement) => {
     }
 };
 
-// Wire up buttons
+
 $('#playersTable tbody').on('click', '.edit-btn', function () {
     playerActions.editPlayer(this);
 });

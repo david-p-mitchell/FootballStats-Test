@@ -1,6 +1,6 @@
 ﻿using AFCStatsApp.Db;
 using AFCStatsApp.Interfaces.Repositories;
-using AFCStatsApp.Models;
+using AFCStatsApp.Models.Player;
 using Microsoft.EntityFrameworkCore;
 
 namespace AFCStatsApp.Repositories;

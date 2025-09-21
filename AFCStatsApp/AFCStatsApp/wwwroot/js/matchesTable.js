@@ -2,7 +2,7 @@
 let retryCount = 0;
 const maxRetries = 3;
 
-$(document).ready(function () {
+$(function () {
 
     // Helper function: format date as "Wed 3rd July"
     function formatMatchDate(dateString) {

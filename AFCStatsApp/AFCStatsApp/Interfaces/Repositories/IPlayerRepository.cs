@@ -1,4 +1,4 @@
-﻿using AFCStatsApp.Models;
+﻿using AFCStatsApp.Models.Player;
 
 namespace AFCStatsApp.Interfaces.Repositories
 {

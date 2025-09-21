@@ -2,8 +2,6 @@
 
 
 async function request(url, player = null, method = 'POST') {
-
-    
     try {
         const options = {
             method,

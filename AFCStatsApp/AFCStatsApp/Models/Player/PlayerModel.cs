@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
-namespace AFCStatsApp.Models;
+namespace AFCStatsApp.Models.Player;
 
 public record PlayerModel
 {
@@ -12,9 +12,9 @@ public record PlayerModel
 
     [JsonConverter(typeof(JsonStringEnumConverter))]
     public required PositionEnum Position { get; set; }
-    
-    [Range(1,99)]
-    public required byte JerseyNumber { get; set; }
+
+    [Range(1, 99)]
+    public required int JerseyNumber { get; set; } // have accepted spec of int, but should be a byte?
 
     public int GoalsScored { get; set; } = 0;
 }

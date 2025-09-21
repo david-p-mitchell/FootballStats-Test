@@ -1,8 +1,7 @@
 ﻿using AFCStatsApp.Interfaces.Repositories;
-using AFCStatsApp.Models;
+using AFCStatsApp.Models.Player;
 using AFCStatsApp.Services;
 using Moq;
-using System.Numerics;
 
 namespace AFCStatsApp.Tests.Services;
 

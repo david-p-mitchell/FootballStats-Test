@@ -1,5 +1,6 @@
 ﻿using AFCStatsApp.Interfaces.Services;
 using AFCStatsApp.Models;
+using AFCStatsApp.Models.Player;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AFCStatsApp.Controllers;
@@ -24,6 +25,27 @@ public class PlayersController(IPlayerService _playerService) : Controller
 
         }
     }
+
+
+    [HttpGet]
+    public async Task<ActionResult> PlayerModal(int? playerId)
+    {
+        
+        if (!playerId.HasValue)
+        {
+            var model = new PlayerModalProps { Show = true };
+            return PartialView("_PlayerModal", model);
+        }
+
+        var players = await _playerService.GetAllAsync();
+        var player = players.Where(playerFromStore => playerFromStore.PlayerId == playerId).FirstOrDefault();
+        if (player != null) return PartialView("_PlayerModal", player);
+        
+
+        return NotFound();
+        
+    }
+
 
     [HttpPost("/api/players/add")]
     [ValidateAntiForgeryToken]

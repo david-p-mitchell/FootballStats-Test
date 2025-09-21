@@ -1,6 +1,6 @@
 ﻿using AFCStatsApp.Controllers;
 using AFCStatsApp.Interfaces.Services;
-using AFCStatsApp.Models;
+using AFCStatsApp.Models.Player;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;

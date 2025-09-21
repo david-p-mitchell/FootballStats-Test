@@ -1,4 +1,4 @@
-﻿namespace AFCStatsApp.Models;
+﻿namespace AFCStatsApp.Models.Player;
 
 public class ResultModel
 {

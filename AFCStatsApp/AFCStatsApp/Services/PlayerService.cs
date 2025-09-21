@@ -1,6 +1,6 @@
 ﻿using AFCStatsApp.Interfaces.Repositories;
 using AFCStatsApp.Interfaces.Services;
-using AFCStatsApp.Models;
+using AFCStatsApp.Models.Player;
 
 namespace AFCStatsApp.Services;
 
@@ -22,7 +22,7 @@ public class PlayerService(IPlayerRepository playerRepository) : IPlayerService
 
     public async Task<PlayerModel> UpdateAsync(PlayerModel playerToBeUpdated) => await _playerRepository.UpdateAsync(playerToBeUpdated);
 
-    public async Task<bool> ExistsByJerseyNumberAsync(byte jerseyNumber, int? excludePlayerId = null)
+    public async Task<bool> ExistsByJerseyNumberAsync(int jerseyNumber, int? excludePlayerId = null)
     {
         var allPlayers = await _playerRepository.GetAllAsync();
         if(excludePlayerId == null) return allPlayers.Any(p => p.JerseyNumber == jerseyNumber);

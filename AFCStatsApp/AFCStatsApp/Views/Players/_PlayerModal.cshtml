@@ -1,0 +1,11 @@
+﻿@page
+@using AFCStatsApp.Models.Player;
+@using React.AspNet
+@model PlayerModalProps
+@{
+    @Html.React("PlayerModal",Model);
+}
+
+@section Scripts {
+    <script src="~/js/playerModal/PlayerModal.jsx"></script>
+}

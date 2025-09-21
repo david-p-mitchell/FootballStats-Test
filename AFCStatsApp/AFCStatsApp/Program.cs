@@ -4,7 +4,10 @@ using AFCStatsApp.Interfaces.Services;
 using AFCStatsApp.Models;
 using AFCStatsApp.Repositories;
 using AFCStatsApp.Services;
+using JavaScriptEngineSwitcher.ChakraCore;
+using JavaScriptEngineSwitcher.Extensions.MsDependencyInjection;
 using Microsoft.EntityFrameworkCore;
+using React.AspNet;
 using Refit;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -22,7 +25,16 @@ builder.Services.Configure<FootballDataOrgApiSettings>(
     builder.Configuration.GetSection("FootballApi")
 );
 
+builder.Services.AddReact();
+
+builder.Services.AddJsEngineSwitcher(options =>
+{
+    options.DefaultEngineName = ChakraCoreJsEngine.EngineName;
+}).AddChakraCore();
+
 var apiSettings = builder.Configuration.GetSection("FootballDataOrgApi").Get<FootballDataOrgApiSettings>();
+
+
 
 builder.Services.AddRefitClient<IMatchesAPI>()
     .ConfigureHttpClient(c =>
@@ -53,7 +65,12 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
+app.UseReact(config =>
+{
+    // Optional: configure Babel/JSX transforms or add scripts
+    config
+        .AddScript("~/js/playerModal/playerModal.jsx");
+});
 app.UseRouting();
 
 app.UseAuthorization();
