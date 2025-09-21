@@ -14,7 +14,7 @@ public record PlayerModel
     public required PositionEnum Position { get; set; }
     
     [Range(1,99)]
-    public required byte JerseyNumber { get; set; }
+    public required int JerseyNumber { get; set; } // should probably be a byte, but following brief
 
     public int GoalsScored { get; set; } = 0;
 }
