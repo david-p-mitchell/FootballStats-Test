@@ -1,7 +1,7 @@
 ﻿let playersDataTable;
 let retryCount = 0;
 const maxRetries = 3;
-$(document).ready(function () {
+$(function () {
     playersDataTable = $('#playersTable').DataTable({
         ajax: {
             url: 'api/players/getAll',

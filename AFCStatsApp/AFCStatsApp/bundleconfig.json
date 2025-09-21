@@ -4,5 +4,29 @@
     "inputFiles": [
       "wwwroot/js/toast.js"
     ]
+  },
+  {
+    "outputFileName": "wwwroot/js/matchesTable.min.js",
+    "inputFiles": [
+      "wwwroot/js/matchesTable.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/playerActions.min.js",
+    "inputFiles": [
+      "wwwroot/js/playerActions.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/playerApi.min.js",
+    "inputFiles": [
+      "wwwroot/js/playerApi.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/playersTable.min.js",
+    "inputFiles": [
+      "wwwroot/js/playersTable.js"
+    ]
   }
 ]
