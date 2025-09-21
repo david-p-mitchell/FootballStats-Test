@@ -35,7 +35,11 @@ public class PlayerRepository(AppDbContext context) : IPlayerRepository
         return player;
     }
 
-    // Update an existing player
+    /// <summary>
+    /// Update an existing player
+    /// </summary>
+    /// <param name="player">Player to Update</param>
+    /// <returns></returns>
     public async Task<PlayerModel> UpdateAsync(PlayerModel player)
     {
         try
@@ -59,7 +63,11 @@ public class PlayerRepository(AppDbContext context) : IPlayerRepository
 
     }
 
-    // Delete a player
+    /// <summary>
+    /// Delete a player
+    /// </summary>
+    /// <param name="id">PlayerId of Player To Delete</param>
+    /// <returns></returns>
     public async Task<bool> DeleteAsync(int id)
     {
         

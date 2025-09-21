@@ -2,7 +2,7 @@
 let retryCount = 0;
 const maxRetries = 3;
 
-$(document).ready(function () {
+$(function () {
 
     // Helper function: format date as "Wed 3rd July"
     function formatMatchDate(dateString) {
@@ -48,7 +48,7 @@ $(document).ready(function () {
             $(thead).remove(); // removes thead entirely
         },
         ajax: {
-            url: 'api/teams/57/matches',
+            url: 'api/matches/teams/57',
             dataSrc: '',
             error: function (xhr, status, error) {
                 if (xhr.status === 500 && retryCount < maxRetries) {

@@ -9,6 +9,6 @@ namespace AFCStatsApp.Interfaces.Services
         public Task<PlayerModel> AddAsync(PlayerModel newPlayer);
         public Task<PlayerModel> UpdateAsync(PlayerModel playerToBeUpdated);
         public Task<bool> DeleteAsync(int playerId);
-        public Task<bool> ExistsByJerseyNumberAsync(byte jerseyNumber, int? playerId = null);
+        public Task<bool> ExistsByJerseyNumberAsync(int jerseyNumber, int? playerId = null);
     }
 }

@@ -5,14 +5,14 @@ using Microsoft.Extensions.Caching.Memory;
 
 namespace AFCStatsApp.Controllers
 {
-    public class TeamsController(IMatchesAPI matchesAPI, IMemoryCache cache) : Controller
+    public class MatchesController(IMatchesAPI matchesAPI, IMemoryCache cache) : Controller
     {
         private readonly IMatchesAPI _matchesApi = matchesAPI;
         private readonly IMemoryCache _cache = cache;
 
         public IActionResult Index() => View("Matches");
 
-        [HttpGet("/api/teams/{teamId}/matches")]
+        [HttpGet("/api/matches/teams/{teamId}")]
         public async Task<IActionResult> GetTeamMatches(int teamId= 57)
         {
             

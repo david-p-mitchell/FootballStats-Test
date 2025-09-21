@@ -6,7 +6,7 @@ namespace AFCStatsApp.Controllers;
 
 public class PlayersController(IPlayerService _playerService) : Controller
 {
-    public IActionResult Index() => View(); // pass the list to the view
+    public IActionResult Index() => View();
 
 
     [HttpGet("api/players/getAll")]
