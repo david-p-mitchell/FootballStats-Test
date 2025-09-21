@@ -48,7 +48,7 @@ $(function () {
             $(thead).remove(); // removes thead entirely
         },
         ajax: {
-            url: 'api/teams/57/matches',
+            url: 'api/matches/teams/57',
             dataSrc: '',
             error: function (xhr, status, error) {
                 if (xhr.status === 500 && retryCount < maxRetries) {
