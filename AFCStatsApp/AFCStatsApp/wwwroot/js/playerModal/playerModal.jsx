@@ -1,6 +1,4 @@
-// ==============================
-// playerModal.jsx
-// ==============================
+
 const { useState, useEffect } = React;
 
 function PlayerModal({ show, onClose, playerModel, playerApi, playersDataTable }) {
