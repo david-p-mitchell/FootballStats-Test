@@ -51,5 +51,6 @@ playerApi.delete = async (playerId) => {
             'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
         }
     };
-    await fetch(`/api/players/delete/${playerId}`, options);
+    let data = await fetch(`/api/players/delete/${playerId}`, options);
+    return data.json();
 };

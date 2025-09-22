@@ -9,13 +9,8 @@ playerActions.editPlayer = (rowElement) => {
 };
 
 playerActions.deletePlayer = async (rowElement) => {
-    if (confirm("Are you sure you want to delete this player?")) {
-        const player = playersDataTable.row($(rowElement).closest('tr')).data();
-        console.log(player.playerId);
-        await playerApi.delete(player.playerId);
-        showToast('Player removed', 'success', 3000);
-        playersDataTable.ajax.reload();
-    }
+    const player = playersDataTable.row($(rowElement).closest('tr')).data();
+    openDeletePlayerModal(player);
 };
 
 // Wire up buttons
