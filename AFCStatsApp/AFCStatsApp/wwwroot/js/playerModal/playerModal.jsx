@@ -129,5 +129,4 @@ window.openPlayerModal = function (playerModel = null) {
     renderModal();
 };
 
-// Initial render
 renderModal();
